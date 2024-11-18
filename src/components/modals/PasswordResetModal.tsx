@@ -15,7 +15,7 @@ export default function PasswordResetModal({ isOpen }: { isOpen: boolean }) {
         <AlertDialogHeader>
           <AlertDialogTitle>Password reset successful</AlertDialogTitle>
           <AlertDialogDescription>
-            Congratulations. You have successfully reset your compny account
+            Congratulations. You have successfully reset your company account
             password. You can now proceed to login with your new credentials
           </AlertDialogDescription>
         </AlertDialogHeader>

@@ -21,6 +21,13 @@ export const Login = async (
       });
 
       navigate("/");
+
+      // Save company id and token to local storage
+      const token = res.data.token;
+      const companyId = res.data.company.id;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("companyId", companyId);
     })
     .catch((err) => {
       toast.error(err?.response?.data?.message || "Unable to sign in", {
