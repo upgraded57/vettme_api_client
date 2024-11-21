@@ -57,7 +57,15 @@ export default function DashboardRecent() {
                   </TableCell>
                   <TableCell>{item.cost}</TableCell>
                   <TableCell>
-                    <span className="bg-green-200 flex items-center justify-center w-max rounded-full px-3 py-1 text-xs">
+                    <span
+                      className={`${
+                        parseInt(item.status) <= 200
+                          ? "bg-green-200"
+                          : parseInt(item.status) <= 300
+                          ? "bg-yellow-200"
+                          : "bg-red-200"
+                      } flex items-center justify-center w-max rounded-full px-3 py-1 text-xs`}
+                    >
                       {item.status}
                     </span>
                   </TableCell>
