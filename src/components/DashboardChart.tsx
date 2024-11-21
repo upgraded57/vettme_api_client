@@ -7,7 +7,6 @@ import {
 import { useFetchRecentActivities } from "@/hooks/apps";
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
-import Loader from "./Loader";
 import moment from "moment";
 
 export default function DashboardChart() {
@@ -63,7 +62,10 @@ export default function DashboardChart() {
   } satisfies ChartConfig;
 
   return isLoading ? (
-    <Loader />
+    <div className="w-full h-full flex items-center justify-center flex-col gap-2">
+      <div className="loader" />
+      <p className="text-sm">Loading...</p>
+    </div>
   ) : (
     <ChartContainer config={chartConfig} className="h-full w-full">
       <BarChart accessibilityLayer data={chartData} margin={{ bottom: 40 }}>
