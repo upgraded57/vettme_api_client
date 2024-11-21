@@ -20,10 +20,22 @@ import { DownloadIcon } from "@radix-ui/react-icons";
 import { useFetchTransactions } from "@/hooks/company";
 import Loader from "@/components/Loader";
 import EmptyState from "@/components/EmptyState";
+import moment from "moment";
+
+interface TransactionProps {
+  amount: number;
+  companyId: string;
+  createdAt: string;
+  id: string;
+  status: string;
+  type: string;
+  reference: string;
+}
 export default function Wallet() {
   const { isLoading, isFetching, data: transactions } = useFetchTransactions();
   const company = useContext(UserContext)?.company;
   const [topupModalOpen, setTopupModalOpen] = useState(false);
+
   return (
     <>
       {
@@ -57,34 +69,45 @@ export default function Wallet() {
               <TableRow>
                 <TableHead className="text-white">Transaction ID</TableHead>
                 <TableHead className="text-white">Transaction Type</TableHead>
+                <TableHead className="text-white">Amount</TableHead>
                 <TableHead className="text-white">Status</TableHead>
                 <TableHead className="text-white">Date</TableHead>
                 <TableHead className="text-white">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {[1, 2, 3, 4, 5]?.map((_, idx: number) => (
-                <TableRow key={idx}>
-                  <TableCell>fdf2ettydvgcbjjGFGh12cs</TableCell>
-                  <TableCell>Wallet Topup</TableCell>
-                  <TableCell>Success</TableCell>
-                  <TableCell>Oct 23rd, 2024. 10:04am</TableCell>
-                  <TableCell>
-                    <TooltipProvider>
-                      <Tooltip delayDuration={0}>
-                        <TooltipTrigger>
-                          <span className="p-2 flex w-max hover:bg-gray-200 rounded-md cursor-pointer">
-                            <DownloadIcon />
-                          </span>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-[200px]" side="bottom">
-                          <p>Download Receipt</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {transactions?.map(
+                (transaction: TransactionProps, idx: number) => (
+                  <TableRow key={idx}>
+                    <TableCell>{transaction.reference}</TableCell>
+                    <TableCell>{transaction.type}</TableCell>
+                    <TableCell>{transaction.amount}</TableCell>
+                    <TableCell>{transaction.status}</TableCell>
+                    <TableCell>
+                      {moment(transaction.createdAt).format(
+                        "MMM DD, YYYY HH:MM A"
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <TooltipProvider>
+                        <Tooltip delayDuration={0}>
+                          <TooltipTrigger>
+                            <span className="p-2 flex w-max hover:bg-gray-200 rounded-md cursor-pointer">
+                              <DownloadIcon />
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent
+                            className="max-w-[200px]"
+                            side="bottom"
+                          >
+                            <p>Download Receipt</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableCell>
+                  </TableRow>
+                )
+              )}
             </TableBody>
           </Table>
         )}

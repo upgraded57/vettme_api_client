@@ -1,6 +1,6 @@
 import { axiosInstance } from "@/api/axiosConfig";
 import { QueryClient, useQuery } from "@tanstack/react-query";
-import { SetStateAction } from "react";
+import React, { SetStateAction } from "react";
 import toast from "react-hot-toast";
 
 export const useFetchCompany = () => {
@@ -109,4 +109,29 @@ export const useFetchTransactions = () => {
     staleTime: 1000 * 60 * 2,
     select: (data) => data.transactions,
   });
+};
+
+export const initiateTopup = async (
+  amount: string,
+  setIsLoading: React.Dispatch<SetStateAction<boolean>>
+) => {
+  const toastId = toast.loading("Initiating topup", { id: "topupToast" });
+  setIsLoading(true);
+
+  await axiosInstance
+    .post("/payment/create", { amount })
+    .then((res) => {
+      toast.success(res?.data?.message || "Payment initiated successfully", {
+        id: toastId,
+      });
+
+      window.location = res?.data?.data?.authorization_url;
+    })
+    .catch((err) => {
+      toast.error(
+        err?.response?.data?.message || "Unable to initiate payment",
+        { id: toastId }
+      );
+    })
+    .finally(() => setIsLoading(false));
 };

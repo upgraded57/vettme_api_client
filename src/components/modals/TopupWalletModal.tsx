@@ -10,6 +10,8 @@ import React, { SetStateAction, useState } from "react";
 import { Input } from "@/components/ui/input";
 import Spinner from "../Spinner";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import toast from "react-hot-toast";
+import { initiateTopup } from "@/hooks/company";
 
 export default function TopupWalletModal({
   isOpen,
@@ -19,14 +21,17 @@ export default function TopupWalletModal({
   setIsOpen: React.Dispatch<SetStateAction<boolean>>;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [amount, setAmount] = useState("");
 
   const handleTopup = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    if (parseInt(amount) < 300) {
+      toast.error("Minimum topup amount is NGN 300", { id: "topupToast" });
+      return;
+    }
+
+    initiateTopup(amount, setIsLoading);
   };
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -53,6 +58,8 @@ export default function TopupWalletModal({
                 inputMode="numeric"
                 id="amount"
                 name="amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 disabled={isLoading}
               />
             </label>

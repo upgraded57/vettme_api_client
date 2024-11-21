@@ -10,7 +10,6 @@ export const useFetchApps = () => {
 
       return await res.data;
     } catch (error) {
-      console.log(error);
       throw new Error("Failed to fetch applications");
     }
   };
@@ -29,7 +28,6 @@ export const useFetchAppLogs = (appId: string) => {
       const res = await axiosInstance.get(`/user/application/${appId}`);
       return await res.data;
     } catch (error) {
-      console.log(error);
       throw new Error("Failed to fetch applications");
     }
   };
