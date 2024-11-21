@@ -28,7 +28,7 @@ export default function DeleteAppModal({
 }: ModalProps) {
   const queryClient = useQueryClient();
   const [isLoading, setIsLoading] = useState(false);
-  const [appName, setAppName] = useState<string | null>(null);
+  const [appName, setAppName] = useState("");
   const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -71,7 +71,7 @@ export default function DeleteAppModal({
                 placeholder="e.g. My App"
                 id="appName"
                 name="appName"
-                value={appName as string}
+                value={appName}
                 onChange={(e) => setAppName(e.target.value)}
                 disabled={isLoading}
               />

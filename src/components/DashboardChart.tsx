@@ -4,36 +4,67 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useFetchRecentActivities } from "@/hooks/apps";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import Loader from "./Loader";
+import moment from "moment";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-  { month: "July", desktop: 186, mobile: 80 },
-  { month: "August", desktop: 305, mobile: 200 },
-  { month: "September", desktop: 237, mobile: 120 },
-  { month: "October", desktop: 73, mobile: 190 },
-  { month: "November", desktop: 209, mobile: 130 },
-  { month: "December", desktop: 214, mobile: 140 },
-];
-
-const chartConfig = {
-  desktop: {
-    label: "Sandbox",
-    color: "#ABABAB",
-  },
-  mobile: {
-    label: "Live",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
 export default function DashboardChart() {
-  return (
+  const { isLoading, data: recent } = useFetchRecentActivities();
+
+  const currentYear = new Date().getFullYear();
+
+  const generateChartData = (recent: any[], currentYear: number) => {
+    const months = [
+      { name: "January", short: "jan" },
+      { name: "February", short: "feb" },
+      { name: "March", short: "mar" },
+      { name: "April", short: "apr" },
+      { name: "May", short: "may" },
+      { name: "June", short: "jun" },
+      { name: "July", short: "jul" },
+      { name: "August", short: "aug" },
+      { name: "September", short: "sep" },
+      { name: "October", short: "oct" },
+      { name: "November", short: "nov" },
+      { name: "December", short: "dec" },
+    ];
+
+    const filterByMonthAndEnvironment = (
+      monthShort: string,
+      environment: string
+    ) =>
+      recent?.filter(
+        (r: any) =>
+          moment(r.date).format("MMM").toLowerCase() === monthShort &&
+          moment(r.date).format("YYYY") === currentYear.toString() &&
+          r.environment === environment
+      ).length;
+
+    return months?.map(({ name, short }) => ({
+      month: name,
+      sandbox: filterByMonthAndEnvironment(short, "sandbox"),
+      live: filterByMonthAndEnvironment(short, "live"),
+    }));
+  };
+
+  const chartData = generateChartData(recent, currentYear);
+
+  const chartConfig = {
+    sandbox: {
+      label: "Sandbox",
+      color: "#ABABAB",
+    },
+    live: {
+      label: "Live",
+      color: "hsl(var(--chart-2))",
+    },
+  } satisfies ChartConfig;
+
+  return isLoading ? (
+    <Loader />
+  ) : (
     <ChartContainer config={chartConfig} className="h-full w-full">
       <BarChart accessibilityLayer data={chartData} margin={{ bottom: 40 }}>
         <CartesianGrid vertical={false} />
@@ -44,12 +75,13 @@ export default function DashboardChart() {
           axisLine={true}
           tickFormatter={(value) => value.slice(0, 3)}
         />
+        <YAxis />
         <ChartTooltip
           cursor={false}
-          content={<ChartTooltipContent indicator="dashed" />}
+          content={<ChartTooltipContent indicator="dot" />}
         />
-        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={0} />
-        <Bar dataKey="mobile" fill="var(--color-mobile)" radius={0} />
+        <Bar dataKey="sandbox" fill="var(--color-sandbox)" radius={0} />
+        <Bar dataKey="live" fill="var(--color-live)" radius={0} />
       </BarChart>
     </ChartContainer>
   );

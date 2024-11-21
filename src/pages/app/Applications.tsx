@@ -17,6 +17,12 @@ import toast from "react-hot-toast";
 import { useState } from "react";
 import CreateAppModal from "@/components/modals/CreateAppModal";
 import DeleteAppModal from "@/components/modals/DeleteAppModal";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface App {
   companyId: string;
@@ -100,27 +106,48 @@ export default function Applications() {
                 <TableRow key={idx} onClick={(e) => handleNavigate(e, app)}>
                   <TableCell>{app.name}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-6">
-                      {app.id}
-                      <span
-                        className="flex w-max rounded-sm p-2 cursor-pointer hover:bg-gray-200"
-                        onClick={() => copyAppId(app.id)}
-                      >
-                        <CopyIcon className="pointer-events-none" />
-                      </span>
-                    </div>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={0}>
+                        <TooltipTrigger>
+                          <div className="flex items-center gap-6">
+                            {app.id}
+                            <span
+                              className="flex w-max rounded-sm p-2 cursor-pointer hover:bg-gray-200"
+                              onClick={() => copyAppId(app.id)}
+                            >
+                              <CopyIcon className="pointer-events-none" />
+                            </span>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-[200px]" side="bottom">
+                          <p>Copy Application ID</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                   <TableCell>
                     {moment(app.createdAt).format("DD/MM/YYYY, HH:MM A")}
                   </TableCell>
                   <TableCell>{app.logs.length}</TableCell>
                   <TableCell>
-                    <span
-                      className="flex w-max rounded-sm p-2 cursor-pointer hover:bg-red-300"
-                      onClick={() => handleDelete(app)}
-                    >
-                      <TrashIcon className="pointer-events-none" />
-                    </span>
+                    <TooltipProvider>
+                      <Tooltip delayDuration={0}>
+                        <TooltipTrigger>
+                          <span
+                            className="flex w-max rounded-sm p-2 cursor-pointer hover:bg-red-300"
+                            onClick={() => handleDelete(app)}
+                          >
+                            <TrashIcon className="pointer-events-none" />
+                          </span>
+                        </TooltipTrigger>
+                        <TooltipContent
+                          className="max-w-[200px] border-red-500"
+                          side="bottom"
+                        >
+                          <p className="text-red-500">Delete Application</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </TableCell>
                 </TableRow>
               ))}

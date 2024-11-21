@@ -271,7 +271,7 @@ export default function Logs() {
                   <TableCell>{log.service}</TableCell>
                   <TableCell>{log.environment}</TableCell>
                   <TableCell>
-                    {moment(log.createdAt).format("DD/MM/YYYY, HH:MM A")}
+                    {moment(log.createdAt).format("MMM DD, YYYY HH:MM A")}
                   </TableCell>
                   <TableCell>
                     <span
