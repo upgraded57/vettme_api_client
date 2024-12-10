@@ -8,6 +8,15 @@ import favicon from "@/assets/images/favicon.png";
 import phone from "@/assets/images/phone.png";
 import email from "@/assets/images/email.png";
 import sad from "@/assets/images/sad.png";
+import notFound from "@/assets/images/no-results.png";
+import sandboxImg from "@/assets/images/sandbox-sample.jpg";
+import liveImg from "@/assets/images/live-sample.jpg";
+import bvnImg from "@/assets/images/bvn-sample.jpg";
+import ninImg from "@/assets/images/nin-sample.jpg";
+import accImg from "@/assets/images/acc-sample.jpg";
+import pnImg from "@/assets/images/pn-sample.jpg";
+import dlImg from "@/assets/images/dl-sample.jpg";
+import vinImg from "@/assets/images/vin-sample.jpg";
 
 const images = {
   authImg,
@@ -20,6 +29,15 @@ const images = {
   phone,
   email,
   sad,
+  notFound,
+  sandboxImg,
+  liveImg,
+  bvnImg,
+  ninImg,
+  accImg,
+  pnImg,
+  dlImg,
+  vinImg
 };
 
 export default images;

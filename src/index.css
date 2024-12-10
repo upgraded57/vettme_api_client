@@ -169,3 +169,14 @@ a.nav-link.active {
     transform: rotate(1turn);
   }
 }
+
+.pill{
+  @apply py-1 px-2 bg-gray-200 rounded-md font-medium text-sm
+}
+.code {
+  font-family: monospace;
+}
+
+.api-img{
+  @apply max-w-2xl rounded-lg overflow-hidden border-[1px] border-gray-200
+}

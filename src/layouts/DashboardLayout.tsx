@@ -1,5 +1,11 @@
 import images from "@/assets/Images";
 import Loader from "@/components/Loader";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { UserContext } from "@/utils/UserContext";
 import {
   ArchiveIcon,
@@ -101,9 +107,22 @@ export default function DashboardLayout({ children }: Props) {
                 LIVE
               </div>
             ) : (
-              <div className="px-2 py-0.5 rounded-full bg-red-200 text-[10px] font-medium cursor-pointer">
-                SANDBOX
-              </div>
+              <TooltipProvider>
+                <Tooltip delayDuration={0}>
+                  <TooltipTrigger>
+                    <div className="px-2 py-0.5 rounded-full bg-red-200 text-[10px] font-medium cursor-pointer">
+                      SANDBOX
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    <p className="text-sm max-w-[300px] text-balance">
+                      Your account is in sandbox mode. Submit your compliance
+                      information or contact <b>support@vettme.ng</b> for
+                      information on how to activate your account
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
         </div>
